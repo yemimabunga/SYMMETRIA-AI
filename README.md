@@ -228,7 +228,7 @@ The median Killing residual of the learned candidates is also lower than that of
 
 These results should be interpreted within the numerical scope of the experiment. They do not establish a global exact Killing tensor, prove the absence of hidden symmetry when optimization fails, or by themselves establish chaos or non-integrability.
 
-## Repository structure
+## Repository structure 
 
 ```text
 SYMMETRIA-AI/
