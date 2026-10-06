@@ -6,15 +6,15 @@ SYMMETRIA-AI is a computational experiment that investigates whether a neural ne
 
 The main object learned by the model is a symmetric rank-2 contravariant tensor
 
-\[
+$$
 K^{\mu\nu}(r,\theta),
-\]
+$$
 
 which defines the quadratic quantity
 
-\[
+$$
 I = K^{\mu\nu}p_\mu p_\nu.
-\]
+$$
 
 A useful candidate should remain approximately conserved along geodesics and, after lowering its indices, approximately satisfy the Killing tensor equation.
 
@@ -22,7 +22,7 @@ The Carter constant is not provided to the neural network as a target. Instead, 
 
 ## Model
 
-The neural network takes the normalized coordinates \((r,\theta)\) as input and predicts the ten independent components of a symmetric \(K^{\mu\nu}\).
+The neural network takes the normalized coordinates $(r,\theta)$ as input and predicts the ten independent components of a symmetric $K^{\mu\nu}$.
 
 The configuration used for the reported experiments is:
 
@@ -37,13 +37,13 @@ The configuration used for the reported experiments is:
 
 A projection and normalization step is used during training to suppress trivial solutions and simple combinations of already known conserved quantities.
 
-The deformation values used in the experiment are
+The deformation values used in the experiment are:
 
 ```text
 epsilon = 0, 0.01, 0.02, 0.05, 0.10
 ```
 
-and each configuration is evaluated using model seeds `0`, `1`, and `2`.
+Each configuration is evaluated using model seeds `0`, `1`, and `2`.
 
 The training configuration used for these experiments is stored in `FROZEN_PROTOCOL.json`.
 
@@ -51,21 +51,19 @@ The training configuration used for these experiments is stored in `FROZEN_PROTO
 
 The final evaluation is implemented in `symmetria/verification_v2.py`.
 
-Eight held-out orbit families are used at every value of epsilon. The same initial phase-space skeleton is retained between geometries, while \(p_t\) is recomputed from the corresponding metric so that each orbit satisfies the unit-mass timelike mass-shell condition.
+Eight held-out orbit families are used at every value of epsilon. The same initial phase-space skeleton is retained between geometries, while $p_t$ is recomputed from the corresponding metric so that each orbit satisfies the unit-mass timelike mass-shell condition.
 
 An orbit is included only when its complete numerical segment remains valid across all tested deformation values. Orbit selection does not depend on neural-network performance.
 
 The verification also uses 512 common spacetime points for each epsilon.
 
-Two main quantities are reported.
-
 ### Killing residual
 
 `R_K` measures the relative RMS residual of
 
-\[
+$$
 \nabla_{(\alpha}K_{\beta\gamma)} = 0
-\]
+$$
 
 in an orthonormal frame.
 
@@ -75,63 +73,66 @@ A smaller value indicates that the learned tensor is closer to satisfying the Ki
 
 `delta_I` measures the maximum relative change of
 
-\[
+$$
 I = K^{\mu\nu}p_\mu p_\nu
-\]
+$$
 
 along the held-out geodesics.
 
 It is calculated as
 
-\[
+$$
 \delta_I =
 \max_i
 \frac{|I_i-I_0|}
 {\max(1,|I_0|)}.
-\]
+$$
 
-At \(\epsilon=0\), the learned tensor is also aligned with the analytical Kerr tensor so that its reconstruction error can be evaluated directly.
+At $\epsilon=0$, the learned tensor is also aligned with the analytical Kerr tensor so that its reconstruction error can be evaluated directly.
 
 ## Kerr comparator
 
-The analytical Kerr tensor at \(\epsilon=0\) is also evaluated in every deformed geometry without changing or refitting it.
+The analytical Kerr tensor at $\epsilon=0$ is also evaluated in every deformed geometry without changing or refitting it.
 
 This provides a fixed reference for studying how the original Kerr hidden symmetry behaves when the metric is deformed.
 
 For the metric used here, the deformation is introduced through
 
-\[
-\epsilon\left(\frac{M}{r}\right)^2
+$$
+\epsilon
+\left(\frac{M}{r}\right)^2
 \frac{3\cos^2\theta-1}{2}
-\]
+$$
 
-in \(g_{tt}\).
+in $g_{tt}$.
 
 This is a controlled toy deformation used for the numerical experiment. It is not intended to represent a validated astrophysical black-hole solution.
 
 ## Exact audit
 
-The repository also contains a symbolic check implemented in
+The repository also contains a symbolic check implemented in:
 
 ```text
 symmetria/exactness_audit.py
 ```
 
-For \(M=1\), \(a=0.6\), evaluated exactly at
+For $M=1$ and $a=0.6$, evaluated exactly at
 
-\[
-r=8,\qquad \theta=\frac{\pi}{3},
-\]
+$$
+r=8,
+\qquad
+\theta=\frac{\pi}{3},
+$$
 
 SymPy gives
 
-\[
+$$
 R_{(tr\phi)}
 =
 \frac{277127271}{84753091804160}\epsilon.
-\]
+$$
 
-This shows that the unchanged Kerr tensor does not remain an exact Killing tensor of the deformed metric when \(\epsilon\neq0\).
+This shows that the unchanged Kerr tensor does not remain an exact Killing tensor of the deformed metric when $\epsilon \neq 0$.
 
 The result applies specifically to the fixed Kerr tensor. It does not prove that another epsilon-dependent exact Killing tensor cannot exist.
 
@@ -159,13 +160,13 @@ results/
 
 `final_summary.csv` contains the aggregate statistics used for reporting the experiment.
 
-The main deformation figure is available at
+The main deformation figure is available at:
 
 ```text
 figures/Figure_2_4_1_Deformation_Response.png
 ```
 
-and the Kerr benchmark is available in
+The Kerr benchmark is available in:
 
 ```text
 figures/Table_2_4_1_Kerr_Benchmark.png
@@ -219,7 +220,7 @@ Existing result directories are not silently overwritten.
 
 ## Interpretation
 
-At \(\epsilon=0\), the learned candidates approach the known Kerr tensor while maintaining low Killing residuals and low invariant drift on held-out geodesics.
+At $\epsilon=0$, the learned candidates approach the known Kerr tensor while maintaining low Killing residuals and low invariant drift on held-out geodesics.
 
 For non-zero deformation, the unchanged Kerr tensor no longer satisfies the same geometric condition exactly. Across the tested finite domain, the re-learned SYMMETRIA-AI candidates show lower invariant drift than the fixed Kerr comparator for all tested non-zero epsilon values.
 
